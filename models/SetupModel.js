@@ -1,0 +1,19 @@
+import mongoose from "mongoose";
+
+const SetupSchema = mongoose.Schema(
+  {
+    userId: { type: String, required: true },
+    username: { type: String, required: true },
+    profile: { type: Object },
+    text: { type: String, required: true },
+    image: { type: Object },
+    video: { type: Object },
+    likes: { type: Array, default: [] },
+    comments: { type: Array, default: [] },
+  },
+  { timestamps: true }
+);
+
+const SetupModel = mongoose.model("Setups", SetupSchema);
+
+export default SetupModel;
