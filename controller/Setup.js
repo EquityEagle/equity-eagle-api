@@ -115,6 +115,7 @@ export const CommentOnSetup = async (req, res) => {
     const { image, body } = req.body;
     const setup = await SetupModel.findById(setupId);
     const user = await UserModel.findById(userId);
+    const owner = await UserModel.findById(setup.userId);
     if (image) {
       const UploadRes = cloudinary.uploader.upload(image, {
         upload_preset: "EQUITY_EAGLE",
@@ -128,8 +129,17 @@ export const CommentOnSetup = async (req, res) => {
         image: UploadRes,
       });
 
+      const commentNotify = new NotificationModel({
+        userId: setup.userId,
+        image: user.profile,
+        body: `${user.username} Commented on your setup`,
+        seen: false,
+      });
+
       const commentsetup = await comments.save();
+      const notification = await commentNotify.save();
       await setup.updateOne({ $push: { comments: commentsetup } });
+      await owner.updateOne({ $push: { notification: notification } });
     } else {
       const comments = new CommentsModel({
         userId: userId,
@@ -139,7 +149,28 @@ export const CommentOnSetup = async (req, res) => {
       });
 
       const commentsetup = await comments.save();
+      const notification = await commentNotify.save();
       await setup.updateOne({ $push: { comments: commentsetup } });
+      await owner.updateOne({ $push: { notification: notification } });
+    }
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const LikeComments = async (req, res) => {
+  try {
+    const { commentsId } = req.params;
+    const { userId } = req.params;
+    const Comment = await CommentsModel.findById(commentsId);
+
+    if (Comment.likes.includes(userId)) {
+      await Comment.updateOne({ $pull: { likes: userId } });
+      res.status(200).json("Comment Unliked");
+    } else {
+      await Comment.updateOne({ $push: { likes: userId } });
+      res.status(200).json("Comment Liked");
     }
   } catch (error) {
     console.log({ error: error.message });
