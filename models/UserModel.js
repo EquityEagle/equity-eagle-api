@@ -10,6 +10,7 @@ const UserSchema = mongoose.Schema(
     channels: { type: Array, default: [] },
     setups: { type: Array, default: [] },
     trades: { type: Array, default: [] },
+    notification: { type: Array, default: [] },
     lots: { type: Number },
     winRate: { type: Number },
     verified: { type: Boolean, default: false },
