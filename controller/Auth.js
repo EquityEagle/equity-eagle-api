@@ -44,3 +44,16 @@ export const LoginUser = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const LoginWithMail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await UserModel.findOne({ email: email });
+    if (!user) return res.status(404).json("User not found");
+    const person = genAuthToken(user);
+    res.status(200).json(person);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
