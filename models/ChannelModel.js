@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ChannleSchema = mongoose.Schema(
+const CommunitySchema = mongoose.Schema(
   {
     ownerId: { type: String, required: true },
     ownername: { type: String, required: true },
@@ -14,6 +14,6 @@ const ChannleSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const ChannleModel = mongoose.model("Channel", ChannleSchema);
+const CommunityModel = mongoose.model("Channel", CommunitySchema);
 
-export default ChannleModel;
+export default CommunityModel;
