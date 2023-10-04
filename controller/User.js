@@ -15,7 +15,9 @@ export const getUsers = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await UserModel.findOne({ username: username });
+    const user = await UserModel.findOne({ username: username }).select(
+      "-password -notification"
+    );
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -29,17 +31,25 @@ export const getUser = async (req, res) => {
     );
 
     // Calculate win rate
+    // Calculate win rate
     const totalTrades = trades.length;
     const winningTrades = trades.filter(
       (trade) => trade.status === "Win"
     ).length;
 
-    // Calculate win rate as a percentage
-    const winRate = (winningTrades / totalTrades) * 100;
+    // Check if there are no trades (totalTrades is zero)
+    const winRate = totalTrades === 0 ? 0 : (winningTrades / totalTrades) * 100;
 
-    // Update the user's lots and winRate properties
+    // Calculate highest and lowest profit
+    const profits = trades.map((trade) => trade.profit);
+    const highestProfit = Math.max(...profits);
+    const lowestProfit = Math.min(...profits);
+
+    // Update the user's lots, winRate, highestProfit, and lowestProfit properties
     user.lots = totalLots;
     user.winRate = winRate;
+    user.highestProfit = highestProfit;
+    user.lowestProfit = lowestProfit;
 
     // Save the updated user
     await user.save();
@@ -54,7 +64,9 @@ export const getUser = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const { userId } = req.params;
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(userId).select(
+      "-password -notification"
+    );
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -73,12 +85,19 @@ export const getUserById = async (req, res) => {
       (trade) => trade.status === "Win"
     ).length;
 
-    // Calculate win rate as a percentage
-    const winRate = (winningTrades / totalTrades) * 100;
+    // Check if there are no trades (totalTrades is zero)
+    const winRate = totalTrades === 0 ? 0 : (winningTrades / totalTrades) * 100;
 
-    // Update the user's lots and winRate properties
+    // Calculate highest and lowest profit
+    const profits = trades.map((trade) => trade.profit);
+    const highestProfit = Math.max(...profits);
+    const lowestProfit = Math.min(...profits);
+
+    // Update the user's lots, winRate, highestProfit, and lowestProfit properties
     user.lots = totalLots;
     user.winRate = winRate;
+    user.highestProfit = highestProfit;
+    user.lowestProfit = lowestProfit;
 
     // Save the updated user
     await user.save();

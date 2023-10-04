@@ -13,6 +13,8 @@ const UserSchema = mongoose.Schema(
     notification: { type: Array, default: [] },
     lots: { type: Number },
     winRate: { type: Number },
+    highestProfit: { type: Number },
+    lowestProfit: { type: Number },
     verified: { type: Boolean, default: false },
   },
   { timestamps: true }
