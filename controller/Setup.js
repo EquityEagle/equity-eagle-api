@@ -159,7 +159,7 @@ export const CommentOnSetup = async (req, res) => {
   }
 };
 
-export const LikeComments = async (req, res) => {
+export const LikeSetupComments = async (req, res) => {
   try {
     const { commentsId } = req.params;
     const { userId } = req.params;
