@@ -52,7 +52,7 @@ export const PublishSetup = async (req, res) => {
 
 export const getAllSetup = async (req, res) => {
   try {
-    const setups = await SetupModel.find();
+    const setups = await SetupModel.find().sort({ createdAt: -1 });
     if (!setups) return res.status(404).json("No setups avaliable");
     res.status(200).json(setups);
   } catch (error) {
