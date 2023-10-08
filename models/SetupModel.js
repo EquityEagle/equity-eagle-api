@@ -4,6 +4,7 @@ const SetupSchema = mongoose.Schema(
   {
     userId: { type: String, required: true },
     username: { type: String, required: true },
+    pair: { type: String, required: true },
     profile: { type: Object },
     text: { type: String, required: true },
     image: { type: Object },

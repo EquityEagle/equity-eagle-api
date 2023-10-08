@@ -7,7 +7,7 @@ import cloudinary from "../utils/cloudinary.js";
 export const PublishSetup = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { text, image, video } = req.body;
+    const { text, image, video, pair } = req.body;
     const user = await UserModel.findById(userId);
 
     if (!text || (!image && !video)) {
@@ -34,6 +34,7 @@ export const PublishSetup = async (req, res) => {
       username: user.username,
       profile: user.username,
       text: text,
+      pair: pair,
     });
 
     if (image) {
