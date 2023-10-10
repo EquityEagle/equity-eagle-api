@@ -7,10 +7,10 @@ import cloudinary from "../utils/cloudinary.js";
 export const PublishSetup = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { text, image, video, pair } = req.body;
+    const { desc, image, video, pair, type } = req.body;
     const user = await UserModel.findById(userId);
 
-    if (!text || (!image && !video)) {
+    if (!desc || (!image && !video)) {
       return res
         .status(400)
         .json("Text and either an image or video are required");
@@ -33,8 +33,9 @@ export const PublishSetup = async (req, res) => {
       userId: userId,
       username: user.username,
       profile: user.username,
-      text: text,
+      desc: desc,
       pair: pair,
+      type: type,
     });
 
     if (image) {
