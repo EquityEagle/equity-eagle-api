@@ -10,7 +10,7 @@ export const PublishSetup = async (req, res) => {
     const { desc, image, video, pair, type } = req.body;
     const user = await UserModel.findById(userId);
 
-    if (!desc || (!image && !video)) {
+    if (!desc || !image) {
       return res
         .status(400)
         .json("Text and either an image or video are required");
