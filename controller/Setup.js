@@ -161,6 +161,19 @@ export const CommentOnSetup = async (req, res) => {
   }
 };
 
+export const getSetupLikes = async (req, res) => {
+  try {
+    const { setupId } = req.params;
+    const setup = await SetupModel.findById(setupId);
+    const likes = setup.likes;
+    const comments = setup.comments;
+    res.status(200).json({ likes, comments });
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const LikeSetupComments = async (req, res) => {
   try {
     const { commentsId } = req.params;
