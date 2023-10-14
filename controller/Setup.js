@@ -76,8 +76,7 @@ export const getSetup = async (req, res) => {
 
 export const LikeSetup = async (req, res) => {
   try {
-    const { setupId } = req.params;
-    const { userId } = req.params;
+    const { setupId, userId } = req.params;
     const setup = await SetupModel.findById(setupId);
     const sUser = await UserModel.findById(setup.userId);
     const likedUser = await UserModel.findById(userId);
