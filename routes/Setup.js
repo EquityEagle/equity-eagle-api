@@ -12,7 +12,7 @@ import {
 const router = express.Router();
 
 router.get("/", getAllSetup);
-router.get("/:setupId/one", getSetup);
+router.get("/:setupId/:userId/one", getSetup);
 router.post("/new/:userId", PublishSetup);
 router.patch("/:setupId/:userId/like", LikeSetup);
 router.patch("/:setupId/:userId/comment", CommentOnSetup);
