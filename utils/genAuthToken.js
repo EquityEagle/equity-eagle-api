@@ -11,6 +11,7 @@ const genAuthToken = (user) => {
       name: user.name,
       username: user.username,
       email: user.email,
+      profile: user.profile,
     },
     AuthKey
   );

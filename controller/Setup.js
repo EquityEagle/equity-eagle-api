@@ -66,7 +66,11 @@ export const getAllSetup = async (req, res) => {
 export const getSetup = async (req, res) => {
   try {
     const { setupId } = req.params;
+    const { userId } = req.params;
     const setup = await SetupModel.findById(setupId);
+    if (!setup.views.includes(userId)) {
+      await setup.updateOne({ $push: { views: userId } });
+    }
     res.status(200).json(setup);
   } catch (error) {
     console.log({ error: error.message });
@@ -166,7 +170,8 @@ export const getSetupLikes = async (req, res) => {
     const setup = await SetupModel.findById(setupId);
     const likes = setup.likes;
     const comments = setup.comments;
-    res.status(200).json({ likes, comments });
+    const views = setup.views;
+    res.status(200).json({ likes, comments, views });
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });

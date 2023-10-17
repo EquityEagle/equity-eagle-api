@@ -12,6 +12,8 @@ const SetupSchema = mongoose.Schema(
     video: { type: Object },
     likes: { type: Array, default: [] },
     comments: { type: Array, default: [] },
+    views: { type: Array, default: [] },
+    bagged: { type: Array, default: [] },
     rates: { type: Number, default: 0 },
   },
   { timestamps: true }
