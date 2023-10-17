@@ -117,7 +117,7 @@ export const CommentOnSetup = async (req, res) => {
   try {
     const { setupId } = req.params;
     const { userId } = req.params;
-    const { image, body } = req.body;
+    const { image, desc } = req.body;
     const setup = await SetupModel.findById(setupId);
     const user = await UserModel.findById(userId);
     const owner = await UserModel.findById(setup.userId);
@@ -130,7 +130,7 @@ export const CommentOnSetup = async (req, res) => {
         userId: userId,
         username: user.username,
         profile: user.profile,
-        body: body,
+        desc: desc,
         image: UploadRes,
       });
 
