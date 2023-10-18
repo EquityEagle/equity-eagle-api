@@ -234,14 +234,16 @@ export const LikeSetupComments = async (req, res) => {
 
 export const getSetupComments = async (req, res) => {
   try {
-    const { commentId } = req.params;
-    const comments = await CommentsModel.findById(commentId);
+    const { setupId } = req.params;
+    const setup = await SetupModel.findById(setupId);
+    const comments = setup.comments;
     res.status(200).json(comments);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
   }
 };
+
 export const getSetupCommentLikes = async (req, res) => {
   try {
     const { commentId } = req.params;
