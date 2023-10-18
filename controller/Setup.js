@@ -178,11 +178,13 @@ export const CommentOnSetup = async (req, res) => {
     });
 
     const [commentsetup, notification] = await Promise.all([
-      commentS.save(),
+      commentS.save().catch((error) => {
+        console.error("Comment validation error:", error);
+      }),
       commentNotify.save(),
     ]);
 
-    await setup.updateOne({ $push: { comments: commentS } });
+    await setup.updateOne({ $push: { comments: commentsetup } });
     await owner.updateOne({ $push: { notification: notification } });
 
     res.status(200).json({ message: "Comment added successfully" });
