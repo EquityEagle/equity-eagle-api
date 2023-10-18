@@ -182,7 +182,7 @@ export const CommentOnSetup = async (req, res) => {
       commentNotify.save(),
     ]);
 
-    await setup.updateOne({ $push: { comments: commentsetup } });
+    await setup.updateOne({ $push: { comments: commentS } });
     await owner.updateOne({ $push: { notification: notification } });
 
     res.status(200).json({ message: "Comment added successfully" });
