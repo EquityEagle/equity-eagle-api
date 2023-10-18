@@ -231,3 +231,25 @@ export const LikeSetupComments = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const getSetupComments = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const comments = await CommentsModel.findById(commentId);
+    res.status(200).json(comments);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
+export const getSetupCommentLikes = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const comments = await CommentsModel.findById(commentId);
+    const likes = comments.likes;
+    res.status(200).json(likes);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
