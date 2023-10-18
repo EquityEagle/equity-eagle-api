@@ -159,7 +159,7 @@ export const CommentOnSetup = async (req, res) => {
         upload_preset: "EQUITY_EAGLE",
       });
 
-      const comments = new CommentsModel({
+      const commentS = new CommentsModel({
         userId: userId,
         username: user.username,
         profile: user.profile,
@@ -174,19 +174,19 @@ export const CommentOnSetup = async (req, res) => {
         seen: false,
       });
 
-      const commentsetup = await comments.save();
+      const commentsetup = await commentS.save();
       const notification = await commentNotify.save();
       await setup.updateOne({ $push: { comments: commentsetup } });
       await owner.updateOne({ $push: { notification: notification } });
     } else {
-      const comments = new CommentsModel({
+      const commentS = new CommentsModel({
         userId: userId,
         username: user.username,
         profile: user.profile,
         desc: desc,
       });
 
-      const commentsetup = await comments.save();
+      const commentsetup = await commentS.save();
       const notification = await commentNotify.save();
       await setup.updateOne({ $push: { comments: commentsetup } });
       await owner.updateOne({ $push: { notification: notification } });
