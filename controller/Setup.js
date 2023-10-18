@@ -148,52 +148,47 @@ export const BagSetup = async (req, res) => {
 
 export const CommentOnSetup = async (req, res) => {
   try {
-    const { setupId } = req.params;
-    const { userId } = req.params;
+    const { setupId, userId } = req.params;
     const { image, desc } = req.body;
     const setup = await SetupModel.findById(setupId);
     const user = await UserModel.findById(userId);
     const owner = await UserModel.findById(setup.userId);
+
+    const commentNotify = new NotificationModel({
+      userId: setup.userId,
+      image: user.profile,
+      body: `${user.username} Commented on your setup`,
+      seen: false,
+    });
+
+    let UploadRes;
+
     if (image) {
-      const UploadRes = cloudinary.uploader.upload(image, {
+      UploadRes = await cloudinary.uploader.upload(image, {
         upload_preset: "EQUITY_EAGLE",
       });
-
-      const commentS = new CommentsModel({
-        userId: userId,
-        username: user.username,
-        profile: user.profile,
-        desc: desc,
-        image: UploadRes,
-      });
-
-      const commentNotify = new NotificationModel({
-        userId: setup.userId,
-        image: user.profile,
-        body: `${user.username} Commented on your setup`,
-        seen: false,
-      });
-
-      const commentsetup = await commentS.save();
-      const notification = await commentNotify.save();
-      await setup.updateOne({ $push: { comments: commentsetup } });
-      await owner.updateOne({ $push: { notification: notification } });
-    } else {
-      const commentS = new CommentsModel({
-        userId: userId,
-        username: user.username,
-        profile: user.profile,
-        desc: desc,
-      });
-
-      const commentsetup = await commentS.save();
-      const notification = await commentNotify.save();
-      await setup.updateOne({ $push: { comments: commentsetup } });
-      await owner.updateOne({ $push: { notification: notification } });
     }
+
+    const commentS = new CommentsModel({
+      userId: userId,
+      username: user.username,
+      profile: user.profile,
+      desc: desc,
+      image: UploadRes, // This will be undefined if image is not provided
+    });
+
+    const [commentsetup, notification] = await Promise.all([
+      commentS.save(),
+      commentNotify.save(),
+    ]);
+
+    await setup.updateOne({ $push: { comments: commentsetup } });
+    await owner.updateOne({ $push: { notification: notification } });
+
+    res.status(200).json({ message: "Comment added successfully" });
   } catch (error) {
-    console.log({ error: error.message });
-    return res.status(500).json({ error: error.message });
+    console.error("Error:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
