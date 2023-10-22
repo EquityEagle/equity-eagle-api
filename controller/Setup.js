@@ -131,21 +131,6 @@ export const StarSetup = async (req, res) => {
   }
 };
 
-export const BagSetup = async (req, res) => {
-  try {
-    const { setupId, userId } = req.params;
-    const setup = await SetupModel.findById(setupId);
-    const bagged = setup.bagged;
-    if (!bagged.includes(userId)) {
-      await setup.updateOne({ $push: { bagged: userId } });
-      res.status(200).json("Idea bagged");
-    }
-  } catch (error) {
-    console.log({ error: error.message });
-    return res.status(500).json({ error: error.message });
-  }
-};
-
 export const CommentOnSetup = async (req, res) => {
   try {
     const { setupId, userId } = req.params;
@@ -201,9 +186,8 @@ export const getSetupLikes = async (req, res) => {
     const likes = setup.likes;
     const comments = setup.comments;
     const views = setup.views;
-    const bagged = setup.bagged;
     const star = setup.star;
-    res.status(200).json({ likes, comments, views, bagged, star });
+    res.status(200).json({ likes, comments, views, star });
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });

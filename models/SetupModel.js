@@ -13,7 +13,6 @@ const SetupSchema = mongoose.Schema(
     likes: { type: Array, default: [] },
     comments: { type: Array, default: [] },
     views: { type: Array, default: [] },
-    bagged: { type: Array, default: [] },
     star: { type: Array, default: [] },
     rates: { type: Number, default: 0 },
   },
