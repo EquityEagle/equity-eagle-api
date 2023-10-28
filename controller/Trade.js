@@ -10,22 +10,33 @@ export const DocTrade = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const { currency, symbol, type, lotSize, status, why } = req.body;
+    const { symbol, type, lotSize, profit, loss, why, setup, confluence } =
+      req.body;
 
     // Validate the input data here if needed
 
     const docTrade = new TradeModel({
-      currency: currency,
       symbol: symbol,
       type: type,
       lotSize: lotSize,
       why: why,
+      profit: profit,
+      setup: setup,
+      confluence: confluence,
+      loss: loss,
       status: "Running",
     });
 
     const newTrade = await docTrade.save();
 
+    const editedData = new ProfitDataModel({
+      tradeId: newTrade._id,
+      profit: profit,
+      loss: loss,
+    });
+
     await User.updateOne({ $push: { trades: newTrade } });
+    newTrade.updateOne({ $push: { profitData: editedData } });
 
     return res.status(201).json(newTrade);
   } catch (error) {

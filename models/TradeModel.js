@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const TradeSchema = mongoose.Schema(
   {
-    currency: { type: String, required: true },
     symbol: { type: String, required: true },
     type: { type: String, required: true },
     profit: { type: Number },
@@ -14,6 +13,7 @@ const TradeSchema = mongoose.Schema(
     status: { type: String, required: true },
     setup: { type: Array, default: [] },
     rate: { type: Number, default: 0 },
+    confluence: { type: String, required: true },
   },
   { timestamps: true }
 );
