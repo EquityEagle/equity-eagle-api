@@ -5,43 +5,50 @@ import UserModel from "../models/UserModel.js";
 export const DocTrade = async (req, res) => {
   try {
     const { userId } = req.params;
-    const User = await UserModel.findById(userId);
-    if (!User) {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const { symbol, type, lotSize, profit, loss, why, setup, confluence } =
       req.body;
 
-    // Validate the input data here if needed
+    // Validate input data here (if needed)
+    // For example, check if required fields are present, validate types, etc.
 
     const docTrade = new TradeModel({
-      symbol: symbol,
-      type: type,
-      lotSize: lotSize,
-      why: why,
-      profit: profit,
-      setup: setup,
-      confluence: confluence,
-      loss: loss,
+      symbol,
+      type,
+      lotSize,
+      why,
+      profit,
+      setup,
+      confluence,
+      loss,
       status: "Running",
     });
 
+    // Save the new trade
     const newTrade = await docTrade.save();
 
+    // Create new ProfitData
     const editedData = new ProfitDataModel({
       tradeId: newTrade._id,
-      profit: profit,
-      loss: loss,
+      profit,
+      loss,
     });
 
-    await User.updateOne({ $push: { trades: newTrade } });
-    newTrade.updateOne({ $push: { profitData: editedData } });
+    // Update the user with the new trade
+    await user.updateOne({ $push: { trades: newTrade } });
+
+    // Update the trade with the new ProfitData
+    await newTrade.updateOne({ $push: { profitData: editedData } });
 
     return res.status(201).json(newTrade);
   } catch (error) {
-    console.log({ error: error.message });
-    return res.status(500).json({ error: error.message });
+    console.error("DocTrade error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
