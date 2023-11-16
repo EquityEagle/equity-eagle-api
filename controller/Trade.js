@@ -39,11 +39,13 @@ export const DocTrade = async (req, res) => {
       loss,
     });
 
+    const profitData = await editedData.save();
+
     // Update the user with the new trade
     await user.updateOne({ $push: { trades: newTrade } });
 
     // Update the trade with the new ProfitData
-    await newTrade.updateOne({ $push: { profitData: editedData } });
+    await newTrade.updateOne({ $push: { profitData: profitData } });
 
     return res.status(201).json(newTrade);
   } catch (error) {
