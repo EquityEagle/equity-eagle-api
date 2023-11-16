@@ -9,7 +9,7 @@ const TradeSchema = mongoose.Schema(
     loss: { type: Number },
     lotSize: { type: Number, required: true },
     reason: { type: String },
-    why: { type: String, required: true },
+    why: { type: String },
     status: { type: String, required: true },
     setup: { type: Array, default: [] },
     rate: { type: Number, default: 0 },
