@@ -9,12 +9,8 @@ const UserSchema = mongoose.Schema(
     profile: { type: Object },
     channels: { type: Array, default: [] },
     setups: { type: Array, default: [] },
-    trades: { type: Array, default: [] },
+    accounts: { type: Array, default: [] },
     notification: { type: Array, default: [] },
-    lots: { type: Number },
-    winRate: { type: Number },
-    highestProfit: { type: Number },
-    lowestProfit: { type: Number },
     verified: { type: Boolean, default: false },
   },
   { timestamps: true }

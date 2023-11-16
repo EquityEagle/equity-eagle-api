@@ -7,6 +7,7 @@ import AuthRoute from "./routes/Auth.js";
 import UserRoute from "./routes/User.js";
 import TradeRoute from "./routes/Trade.js";
 import SetupRoute from "./routes/Setup.js";
+import TrackRoute from "./routes/AccountMetrix.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/auth", AuthRoute);
 app.use("/trade", TradeRoute);
 app.use("/user", UserRoute);
 app.use("/setup", SetupRoute);
+app.use("/metrix", TrackRoute);
 
 app.use("/", async (req, res) => {
   res.send("Home");

@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 const ProfitDataSchema = mongoose.Schema(
   {
     tradeId: { type: String, required: true },
-    price: { type: Number },
+    profit: { type: Number },
     loss: { type: Number },
   },
   { timestamps: true }
 );
 
-const ProfitDataModel = mongoose.model("PriceData", ProfitDataSchema);
+const ProfitDataModel = mongoose.model("ProfitData", ProfitDataSchema);
 
 export default ProfitDataModel;

@@ -5,7 +5,6 @@ const TradeSchema = mongoose.Schema(
     symbol: { type: String, required: true },
     type: { type: String, required: true },
     profit: { type: Number },
-    profitData: { type: Array, default: [] },
     loss: { type: Number },
     lotSize: { type: Number, required: true },
     reason: { type: String },
