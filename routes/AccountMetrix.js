@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.post("/track/:userId", TrackAccount);
-router.get("/find/:trackId", findAccount);
+router.get("/find/:trackId/one", findAccount);
 router.get("/find/all", FindAccount);
 
 export default router;
