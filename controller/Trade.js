@@ -14,6 +14,8 @@ export const DocTrade = async (req, res) => {
     const { symbol, type, lotSize, profit, loss, why, setup, confluence } =
       req.body;
 
+    const modifiedProfit = loss > 0 && profit === 0 ? -loss : profit;
+
     const docTrade = new TradeModel({
       symbol,
       type,
@@ -29,8 +31,7 @@ export const DocTrade = async (req, res) => {
 
     const editedData = new ProfitDataModel({
       tradeId: newTrade._id,
-      profit,
-      loss,
+      profit: modifiedProfit,
     });
 
     const profitData = await editedData.save();
