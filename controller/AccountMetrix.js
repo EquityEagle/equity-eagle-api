@@ -34,7 +34,7 @@ export const findAccount = async (req, res) => {
 
 export const FindAccount = async (req, res) => {
   try {
-    const accounts = await AccountMetrixModal.find();
+    const accounts = await AccountMetrixModal.find().sort({ createdAt: -1 });
     if (!accounts) return res.status(404).json("No account found");
     return res.status(200).json(accounts);
   } catch (error) {
