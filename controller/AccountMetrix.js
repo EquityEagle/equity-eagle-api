@@ -31,3 +31,14 @@ export const findAccount = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const FindAccount = async (req, res) => {
+  try {
+    const accounts = await AccountMetrixModal.find();
+    if (!accounts) return res.status(404).json("No account found");
+    return res.status(200).json(accounts);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};

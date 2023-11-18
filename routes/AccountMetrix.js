@@ -1,9 +1,14 @@
 import express from "express";
-import { TrackAccount, findAccount } from "../controller/AccountMetrix.js";
+import {
+  FindAccount,
+  TrackAccount,
+  findAccount,
+} from "../controller/AccountMetrix.js";
 
 const router = express.Router();
 
 router.post("/track/:userId", TrackAccount);
 router.get("/find/:trackId", findAccount);
+router.get("/find/all", FindAccount);
 
 export default router;
