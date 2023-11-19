@@ -21,7 +21,7 @@ export const DocTrade = async (req, res) => {
       type: type,
       lotSize: lotSize,
       why: why,
-      profit: why,
+      profit: profit,
       loss: loss,
       status: "Running",
     });
