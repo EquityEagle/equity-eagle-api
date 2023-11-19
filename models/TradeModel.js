@@ -13,7 +13,7 @@ const TradeSchema = mongoose.Schema(
     status: { type: String, required: true },
     setup: { type: Object },
     rate: { type: Number, default: 0 },
-    comments: { type: String, default: [] },
+    comments: { type: String },
   },
   { timestamps: true }
 );
