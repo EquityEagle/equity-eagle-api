@@ -16,12 +16,12 @@ export const DocTrade = async (req, res) => {
     const modifiedProfit = loss > 0 && profit === 0 ? -loss : profit;
 
     const docTrade = new TradeModel({
-      symbol,
-      type,
-      lotSize,
-      why,
-      profit,
-      loss,
+      symbol: symbol,
+      type: type,
+      lotSize: lotSize,
+      why: why,
+      profit: why,
+      loss: loss,
       status: "Running",
     });
     const newTrade = await docTrade.save();
@@ -34,6 +34,7 @@ export const DocTrade = async (req, res) => {
     const profitData = await editedData.save();
     await account.updateOne({ $push: { trades: newTrade } });
     await account.updateOne({ $push: { profitdata: profitData } });
+    console.log("Trade saved");
 
     return res.status(201).json(newTrade);
   } catch (error) {
