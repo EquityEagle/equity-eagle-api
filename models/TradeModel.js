@@ -7,12 +7,13 @@ const TradeSchema = mongoose.Schema(
     profit: { type: Number },
     loss: { type: Number },
     lotSize: { type: Number, required: true },
-    reason: { type: String },
+    entrysty: { type: String },
+    exitsty: { type: String },
     why: { type: String },
     status: { type: String, required: true },
-    setup: { type: Array, default: [] },
+    setup: { type: Object },
     rate: { type: Number, default: 0 },
-    confluence: { type: Array, default: [] },
+    comments: { type: String, default: [] },
   },
   { timestamps: true }
 );

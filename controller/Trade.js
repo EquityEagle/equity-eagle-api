@@ -11,8 +11,7 @@ export const DocTrade = async (req, res) => {
       return res.status(404).json({ message: "Account not found" });
     }
 
-    const { symbol, type, lotSize, profit, loss, why, setup, confluence } =
-      req.body;
+    const { symbol, type, lotSize, profit, loss, why } = req.body;
 
     const modifiedProfit = loss > 0 && profit === 0 ? -loss : profit;
 
@@ -22,8 +21,6 @@ export const DocTrade = async (req, res) => {
       lotSize,
       why,
       profit,
-      setup,
-      confluence,
       loss,
       status: "Running",
     });
