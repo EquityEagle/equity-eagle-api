@@ -5,13 +5,14 @@ import UserModel from "../models/UserModel.js";
 
 export const DocTrade = async (req, res) => {
   try {
-    const { trackId } = req.params;
+    // const { trackId } = req.params;
+
+    const { symbol, type, lotSize, profit, loss, why, trackId } = req.body;
+
     const account = await AccountMetrixModal.findById(trackId);
     if (!account) {
       return res.status(404).json({ message: "Account not found" });
     }
-
-    const { symbol, type, lotSize, profit, loss, why } = req.body;
 
     const modifiedProfit = loss > 0 && profit === 0 ? -loss : profit;
 
