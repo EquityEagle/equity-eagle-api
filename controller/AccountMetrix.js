@@ -59,8 +59,8 @@ export const findAccount = async (req, res) => {
 
     const updatedAccount = {
       _id: account._id,
-      type: account.type,
-      balance: account.balance,
+      type: account.accounttype,
+      balance: balance,
       trades: totalTrades,
       totallots: totalLots,
       winrate: winRate,
@@ -93,7 +93,7 @@ export const getTrades = async (req, res) => {
     const metrix = await AccountMetrixModal.findById(metrixId);
     if (!metrix) return res.status(404).json("Account not found");
     const trades = metrix.trades.sort({ createdAt: -1 });
-    return res.status(200).json(trades);
+    res.status(200).json(trades);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
@@ -106,7 +106,7 @@ export const getProfitdata = async (req, res) => {
     const metrix = await AccountMetrixModal.findById(metrixId);
     if (!metrix) return res.status(404).json("Account not found");
     const profitdata = metrix.profitdata;
-    return res.status(200).json(profitdata);
+    res.status(200).json(profitdata);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
