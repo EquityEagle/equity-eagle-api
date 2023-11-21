@@ -45,7 +45,7 @@ export const findAccount = async (req, res) => {
     const profits = account.trades.map((trade) => trade.profit);
     const Loss = account.trades.map((trade) => trade.loss);
     const balance = account.accountsize;
-    const equity = balance + profits - Loss;
+    const equity = account.accountsize + profits - Loss;
 
     // Check if there are profits before finding the max and min
     const totalProfit =
