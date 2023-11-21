@@ -45,7 +45,6 @@ export const findAccount = async (req, res) => {
     const profits = account.trades.map((trade) => trade.profit);
     const Loss = account.trades.map((trade) => trade.loss);
     const balance = account.accountsize;
-    const equity = account.accountsize + totalProfit - totalLoss;
 
     // Check if there are profits before finding the max and min
     const totalProfit =
@@ -57,6 +56,7 @@ export const findAccount = async (req, res) => {
         ? 0
         : Loss.reduce((max, value) => Math.max(max, value), 0);
 
+    const equity = account.accountsize + totalProfit - totalLoss;
     const createdAt = account.createdAt;
     const currentTime = new Date().getTime(); // Current timestamp in milliseconds
 
