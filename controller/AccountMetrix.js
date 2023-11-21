@@ -99,3 +99,16 @@ export const getTrades = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const getProfitdata = async (req, res) => {
+  try {
+    const { metrixId } = req.params;
+    const metrix = await AccountMetrixModal.findById(metrixId);
+    if (!metrix) return res.status(404).json("Account not found");
+    const profitdata = metrix.profitdata;
+    return res.status(200).json(profitdata);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
