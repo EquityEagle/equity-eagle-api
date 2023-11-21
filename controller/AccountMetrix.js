@@ -57,6 +57,17 @@ export const findAccount = async (req, res) => {
         ? 0
         : Loss.reduce((max, value) => Math.max(max, value), 0);
 
+    const createdAt = account.createdAt;
+    const currentTime = new Date().getTime(); // Current timestamp in milliseconds
+
+    // Calculate the duration in milliseconds
+    const durationInMilliseconds = currentTime - createdAt;
+
+    // Calculate the duration in days
+    const durationInDays = Math.floor(
+      durationInMilliseconds / (1000 * 60 * 60 * 24)
+    );
+
     const updatedAccount = {
       _id: account._id,
       type: account.accounttype,
@@ -67,6 +78,7 @@ export const findAccount = async (req, res) => {
       totalProfit: totalProfit,
       totalLoss: totalLoss,
       equity: equity,
+      days: durationInDays,
     };
 
     res.status(200).json(updatedAccount);
@@ -105,8 +117,8 @@ export const getProfitdata = async (req, res) => {
     const { metrixId } = req.params;
     const metrix = await AccountMetrixModal.findById(metrixId);
     if (!metrix) return res.status(404).json("Account not found");
-    const profitdata = metrix.profitdata;
-    res.status(200).json(profitdata);
+    const profitData = metrix.profitdata;
+    res.status(200).json(profitData);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });

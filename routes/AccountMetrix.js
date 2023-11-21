@@ -13,6 +13,6 @@ router.post("/track/:userId", TrackAccount);
 router.get("/find/:trackId/one", findAccount);
 router.get("/find/all", FindAccount);
 router.get("/find/:metrixId/one/trades", getTrades);
-router.get("/find/:metrixId/one/profitdata", getProfitdata);
+router.get("/find/:metrixId/one/p/data", getProfitdata);
 
 export default router;
