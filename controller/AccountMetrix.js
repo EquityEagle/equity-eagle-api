@@ -92,7 +92,7 @@ export const getTrades = async (req, res) => {
     const { metrixId } = req.params;
     const metrix = await AccountMetrixModal.findById(metrixId);
     if (!metrix) return res.status(404).json("Account not found");
-    const trades = metrix.trades.sort({ createdAt: -1 });
+    const trades = metrix.trades;
     res.status(200).json(trades);
   } catch (error) {
     console.log({ error: error.message });
