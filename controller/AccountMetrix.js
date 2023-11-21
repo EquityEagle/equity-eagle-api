@@ -25,7 +25,51 @@ export const findAccount = async (req, res) => {
     const { trackId } = req.params;
     const account = await AccountMetrixModal.findById(trackId);
     if (!account) return res.status(404).json("Account not found");
-    res.status(200).json(account);
+
+    // Calculate total lots
+    const totalLots = account.trades.reduce(
+      (accumulator, trade) => accumulator + trade.lotSize,
+      0
+    );
+
+    // Calculate win rate
+    const totalTrades = account.trades.length;
+    const winningTrades = account.trades.filter(
+      (trade) => trade.profit !== 0
+    ).length;
+
+    // Handle division by zero
+    const winRate =
+      totalTrades === 0 ? 0 : ((winningTrades / totalTrades) * 100).toFixed(2);
+
+    const profits = account.trades.map((trade) => trade.profit);
+    const Loss = account.trades.map((trade) => trade.loss);
+    const balance = account.accountsize;
+    const equity = balance + profits - Loss;
+
+    // Check if there are profits before finding the max and min
+    const totalProfit =
+      profits.length === 0
+        ? 0
+        : profits.reduce((max, value) => Math.max(max, value), 0);
+    const totalLoss =
+      Loss.length === 0
+        ? 0
+        : Loss.reduce((max, value) => Math.max(max, value), 0);
+
+    const updatedAccount = {
+      _id: account._id,
+      type: account.type,
+      balance: account.balance,
+      trades: totalTrades,
+      totallots: totalLots,
+      winrate: winRate,
+      totalProfit: totalProfit,
+      totalLoss: totalLoss,
+      equity: equity,
+    };
+
+    res.status(200).json(updatedAccount);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
@@ -37,6 +81,19 @@ export const FindAccount = async (req, res) => {
     const accounts = await AccountMetrixModal.find().sort({ createdAt: -1 });
     if (!accounts) return res.status(404).json("No account found");
     return res.status(200).json(accounts);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const getTrades = async (req, res) => {
+  try {
+    const { metrixId } = req.params;
+    const metrix = await AccountMetrixModal.findById(metrixId);
+    if (!metrix) return res.status(404).json("Account not found");
+    const trades = metrix.trades.sort({ createdAt: -1 });
+    return res.status(200).json(trades);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
