@@ -7,7 +7,7 @@ import cloudinary from "../utils/cloudinary.js";
 export const PublishSetup = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { desc, image, video, pair, type } = req.body;
+    const { desc, image, pair, type } = req.body;
     const user = await UserModel.findById(userId);
 
     if (!desc || !image) {
@@ -16,37 +16,29 @@ export const PublishSetup = async (req, res) => {
         .json("Text and either an image or video are required");
     }
 
-    let media;
     if (image) {
-      media = await cloudinary.uploader.upload(image, {
+      const uploadRes = await cloudinary.uploader.upload(image, {
         upload_preset: "EQUITY_EAGLE",
       });
+      if (uploadRes) {
+        const newSetup = new SetupModel({
+          userId: userId,
+          username: user.username,
+          profile: user.profile,
+          desc: desc,
+          pair: pair,
+          type: type,
+          image: uploadRes,
+        });
+
+        const publishedSetup = await newSetup.save();
+        await user.updateOne({ $push: { ideas: publishedSetup } });
+
+        res.status(201).json(publishedSetup);
+      }
     } else {
-      media = await cloudinary.uploader.upload_large(video, {
-        resource_type: "video",
-        chunk_size: 6000000,
-        upload_preset: "EQUITY_EAGLE",
-      });
+      return res.status(404).json("Image is required");
     }
-
-    const newSetup = new SetupModel({
-      userId: userId,
-      username: user.username,
-      profile: user.profile,
-      desc: desc,
-      pair: pair,
-      type: type,
-    });
-
-    if (image) {
-      newSetup.image = media;
-    } else {
-      newSetup.video = media;
-    }
-
-    const publishedSetup = await newSetup.save();
-    await user.updateOne({ $push: { ideas: publishedSetup } });
-    res.status(201).json(publishedSetup);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
