@@ -4,8 +4,10 @@ const CommunitySchema = mongoose.Schema(
   {
     ownerId: { type: String, required: true },
     ownername: { type: String, required: true },
+    ownerUsername: { type: String, required: true },
     ownerProfile: { type: String },
     name: { type: String, required: true },
+    desc: { type: String },
     profile: { type: Object },
     members: { type: Array, default: [] },
     chats: { type: Array, default: [] },
@@ -14,6 +16,6 @@ const CommunitySchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const CommunityModel = mongoose.model("Channel", CommunitySchema);
+const CommunityModel = mongoose.model("Community", CommunitySchema);
 
 export default CommunityModel;

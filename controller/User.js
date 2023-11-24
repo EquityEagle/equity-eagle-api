@@ -1,4 +1,3 @@
-import ProfitDataModel from "../models/ProfitDataModel.js";
 import UserModel from "../models/UserModel.js";
 
 export const getUsers = async (req, res) => {
@@ -17,7 +16,7 @@ export const getUser = async (req, res) => {
   try {
     const { username } = req.params;
     const user = await UserModel.findOne({ username: username }).select(
-      "-password -notification"
+      "-password -notification -trades"
     );
 
     if (!user) {

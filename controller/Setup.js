@@ -45,6 +45,7 @@ export const PublishSetup = async (req, res) => {
     }
 
     const publishedSetup = await newSetup.save();
+    await user.updateOne({ $push: { ideas: publishedSetup } });
     res.status(201).json(publishedSetup);
   } catch (error) {
     console.log({ error: error.message });
