@@ -1,4 +1,5 @@
 import UserModel from "../models/UserModel.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -55,6 +56,35 @@ export const editUser = async (req, res) => {
       new: true,
     });
     res.status(200).json(user);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const updatedProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { profile } = req.body;
+
+    if (profile) {
+      const uploadRes = await cloudinary.uploader.upload(profile, {
+        upload_preset: "EQUITY_EAGLE_PROFILE",
+      });
+
+      if (uploadRes) {
+        const user = await UserModel.findByIdAndUpdate(
+          userId,
+          { profile: uploadRes },
+          {
+            new: true,
+          }
+        );
+        res.status(200).json(user);
+      }
+    } else {
+      return res.status(404).json("Image required");
+    }
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
