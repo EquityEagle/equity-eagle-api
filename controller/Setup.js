@@ -10,11 +10,11 @@ export const PublishSetup = async (req, res) => {
     const { desc, image, pair, type } = req.body;
     const user = await UserModel.findById(userId);
 
-    if (!desc || !image) {
-      return res
-        .status(400)
-        .json("Text and either an image or video are required");
-    }
+    // if (!desc || !image) {
+    //   return res
+    //     .status(400)
+    //     .json("Text and either an image or video are required");
+    // }
 
     if (image) {
       const uploadRes = await cloudinary.uploader.upload(image, {
