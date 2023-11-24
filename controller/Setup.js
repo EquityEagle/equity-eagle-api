@@ -32,7 +32,7 @@ export const PublishSetup = async (req, res) => {
     const newSetup = new SetupModel({
       userId: userId,
       username: user.username,
-      profile: user.username,
+      profile: user.profile,
       desc: desc,
       pair: pair,
       type: type,
