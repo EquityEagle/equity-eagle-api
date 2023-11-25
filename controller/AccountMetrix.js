@@ -96,7 +96,7 @@ export const FindAccount = async (req, res) => {
 
     // Check if there are any matching accounts
     if (userMetrix.length === 0) {
-      return res.status(404).json("You have no account");
+      return res.status(204).json("You have no account");
     }
 
     return res.status(200).json(userMetrix);
