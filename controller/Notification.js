@@ -20,7 +20,7 @@ export const getUnreadNotifications = async (req, res) => {
       (notification) => notification.seen === false
     );
 
-    res.status(200).json({ unread });
+    res.status(200).json(unread);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
