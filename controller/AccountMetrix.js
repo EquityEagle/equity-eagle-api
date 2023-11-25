@@ -94,11 +94,6 @@ export const FindAccount = async (req, res) => {
     const accounts = await AccountMetrixModal.find().sort({ createdAt: -1 });
     const userMetrix = accounts.filter((acc) => acc.userId === userId);
 
-    // Check if there are any matching accounts
-    if (userMetrix.length === 0) {
-      return res.status(204).json("You have no account");
-    }
-
     return res.status(200).json(userMetrix);
   } catch (error) {
     console.log({ error: error.message });
