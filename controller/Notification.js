@@ -14,9 +14,7 @@ export const getNotifications = async (req, res) => {
 export const getUnreadNotifications = async (req, res) => {
   const { userId } = req.params;
   try {
-    const notifications = await NotificationModel.find({
-      userId: userId,
-    });
+    const notifications = await NotificationModel.find({ userId });
 
     const unread = notifications.some((notification) => !notification.seen);
 
