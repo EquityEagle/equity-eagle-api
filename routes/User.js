@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  ConnectWithTraders,
   editUser,
   getUser,
   getUserById,
@@ -14,5 +15,6 @@ router.get("/one/id/:userId", getUserById);
 router.get("/", getUsers);
 router.patch("/edit/:userId", editUser);
 router.patch("/edit/profile/:userId", updatedProfile);
+router.patch("/connect/:userId/:connectorsId", ConnectWithTraders);
 
 export default router;

@@ -1,3 +1,4 @@
+import NotificationModel from "../models/Notification.js";
 import UserModel from "../models/UserModel.js";
 import cloudinary from "../utils/cloudinary.js";
 
@@ -84,6 +85,30 @@ export const updatedProfile = async (req, res) => {
       }
     } else {
       return res.status(404).json("Image required");
+    }
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const ConnectWithTraders = async (req, res) => {
+  try {
+    const { userId, connectorsId } = req.params;
+    const user = await UserModel.findById(userId);
+    const connector = await UserModel.findById(connectorsId);
+
+    const notify = new NotificationModel({
+      userId: userId,
+      image: connector.profile,
+      body: `${connector.name} is now connected with you.`,
+      seen: false,
+    });
+    const newNote = await notify.save();
+
+    if (!user.networks.includes(connectorsId)) {
+      await user.updateOne({ $push: { networks: connectorsId } });
+      await user.updateOne({ $push: { notification: newNote } });
     }
   } catch (error) {
     console.log({ error: error.message });
