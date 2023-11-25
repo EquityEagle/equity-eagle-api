@@ -41,7 +41,7 @@ export const ReadNotifications = async (req, res) => {
 
     await notification.updateOne({ $set: { seen: true } });
 
-    res.status(200).json({ notification });
+    res.status(200).json(notification);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
