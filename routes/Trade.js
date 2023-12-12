@@ -1,10 +1,9 @@
 import express from "express";
-import { DocTrade } from "../controller/Trade.js";
+import { DocTrade, editTrade } from "../controller/Trade.js";
 
 const router = express.Router();
 
-router.post("/new/:trackId", DocTrade);
-// router.patch("/edit/:docId", editDoc);
-// router.patch("/edit/profit", editPrice);
+router.post("/new/", DocTrade);
+router.patch("/edit/:trackId", editTrade);
 
 export default router;

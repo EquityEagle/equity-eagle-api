@@ -5,9 +5,9 @@ import UserModel from "../models/UserModel.js";
 
 export const DocTrade = async (req, res) => {
   try {
-    const { trackId } = req.params;
+    // const { trackId } = req.params;
 
-    const { symbol, type, lotSize, profit, loss, why } = req.body;
+    const { symbol, type, lotSize, profit, loss, why, trackId } = req.body;
 
     const account = await AccountMetrixModal.findById(trackId);
     if (!account) {
@@ -44,38 +44,15 @@ export const DocTrade = async (req, res) => {
   }
 };
 
-// export const editDoc = async (req, res) => {
-//   try {
-//     const { docId } = req.params;
-//     const updatedDoc = await TradeModel.findByIdAndUpdate(docId, req.body, {
-//       new: true,
-//     });
-
-//     if (!updatedDoc) {
-//       return res.status(404).json({ message: "Document not found" });
-//     }
-
-//     return res.status(200).json(updatedDoc);
-//   } catch (error) {
-//     console.log({ error: error.message });
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
-// export const editPrice = async (req, res) => {
-//   try {
-//     const { docId } = req.params;
-//     const { profit, loss } = req.body;
-//     const editedData = new ProfitDataModel({
-//       tradeId: docId,
-//       profit: profit,
-//       loss: loss,
-//     });
-//     const docTrade = await TradeModel.findById(docId);
-//     docTrade.updateOne({ $push: { profitData: editedData } });
-//     docTrade.updateOne({ $set: { profit: profit, loss: loss } });
-//   } catch (error) {
-//     console.log({ error: error.message });
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
+export const editTrade = async (req, res) => {
+  try {
+    const { trackId } = req.params;
+    const trade = await TradeModel.findByIdAndUpdate(trackId, req.body, {
+      new: true,
+    });
+    res.status(200).json(trade);
+  } catch (error) {
+    console.error({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
