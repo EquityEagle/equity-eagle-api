@@ -11,7 +11,7 @@ const TradeSchema = mongoose.Schema(
     exitsty: { type: String },
     why: { type: String },
     status: { type: String, required: true },
-    setup: { type: Object },
+    setupImg: { type: Object },
     rate: { type: Number, default: 0 },
     comments: { type: String },
   },
