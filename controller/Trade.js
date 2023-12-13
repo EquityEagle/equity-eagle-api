@@ -7,9 +7,11 @@ export const DocTrade = async (req, res) => {
   try {
     // const { trackId } = req.params;
 
-    const { symbol, type, lotSize, profit, loss, why, trackId } = req.body;
+    const { symbol, type, lotSize, profit, loss, why, accounthash } = req.body;
 
-    const account = await AccountMetrixModal.findById(trackId);
+    const account = await AccountMetrixModal.findOne({
+      accounthash: accounthash,
+    });
     if (!account) {
       return res.status(404).json({ message: "Account not found" });
     }

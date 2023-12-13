@@ -11,10 +11,10 @@ import {
 const router = express.Router();
 
 router.post("/track/:userId", TrackAccount);
-router.get("/find/:trackId/one", findAccount);
+router.get("/find/:accounthash/one", findAccount);
 router.get("/find/:userId/all", FindAccount);
 router.get("/find/:metrixId/one/trades", getTrades);
 router.get("/find/:metrixId/one/p/data", getProfitdata);
-router.delete("/delete/:trackId", deleteAccount);
+router.delete("/delete/:accounthash", deleteAccount);
 
 export default router;

@@ -1,5 +1,6 @@
 import AccountMetrixModal from "../models/AccountMetrix.js";
 import UserModel from "../models/UserModel.js";
+import { generateUniqueId } from "../utils/genHash.js";
 
 export const TrackAccount = async (req, res) => {
   try {
@@ -10,6 +11,7 @@ export const TrackAccount = async (req, res) => {
       userId: userId,
       accountsize: accountsize,
       accounttype: accounttype,
+      accounthash: generateUniqueId(),
     });
     const newaccount = await trackingacc.save();
     await user.updateOne({ $push: { accounts: newaccount } });
@@ -22,8 +24,10 @@ export const TrackAccount = async (req, res) => {
 
 export const findAccount = async (req, res) => {
   try {
-    const { trackId } = req.params;
-    const account = await AccountMetrixModal.findById(trackId);
+    const { accounthash } = req.params;
+    const account = await AccountMetrixModal.findOne({
+      accounthash: accounthash,
+    });
     if (!account) return res.status(404).json("Account not found");
 
     // Calculate total lots
@@ -129,8 +133,10 @@ export const getProfitdata = async (req, res) => {
 
 export const deleteAccount = async (req, res) => {
   try {
-    const { trackId } = req.params;
-    const account = await AccountMetrixModal.findByIdAndDelete(trackId);
+    const { accounthash } = req.params;
+    const account = await AccountMetrixModal.findOneAndDelete({
+      accounthash: accounthash,
+    });
 
     if (!account) {
       return res.status(404).json({ error: "Account not found" });
