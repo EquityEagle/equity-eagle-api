@@ -49,9 +49,18 @@ export const DocTrade = async (req, res) => {
 export const editTrade = async (req, res) => {
   try {
     const { tradeId } = req.params;
-    const trade = await TradeModel.findByIdAndUpdate(tradeId, req.body, {
+    const { entrysty, exitsty, comments, setupImg } = req.body;
+    const toUpdate = {
+      setupImg: setupImg,
+      entrysty: entrysty,
+      exitsty: exitsty,
+      comments: comments,
+    };
+
+    const trade = await TradeModel.findByIdAndUpdate(tradeId, toUpdate, {
       new: true,
     });
+
     res.status(200).json(trade);
   } catch (error) {
     console.error({ error: error.message });
