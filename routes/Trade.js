@@ -3,7 +3,7 @@ import { DocTrade, editTrade } from "../controller/Trade.js";
 
 const router = express.Router();
 
-router.post("/new/", DocTrade);
+router.post("/new/:accounthash/", DocTrade);
 router.patch("/edit/:trackId", editTrade);
 
 export default router;
