@@ -2,6 +2,7 @@ import AccountMetrixModal from "../models/AccountMetrix.js";
 import ProfitDataModel from "../models/ProfitDataModel.js";
 import TradeModel from "../models/TradeModel.js";
 import UserModel from "../models/UserModel.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const DocTrade = async (req, res) => {
   try {
@@ -50,18 +51,28 @@ export const editTrade = async (req, res) => {
   try {
     const { tradeId } = req.params;
     const { entrysty, exitsty, comments, setupImg } = req.body;
-    const toUpdate = {
-      setupImg: setupImg,
-      entrysty: entrysty,
-      exitsty: exitsty,
-      comments: comments,
-    };
 
-    const trade = await TradeModel.findByIdAndUpdate(tradeId, toUpdate, {
-      new: true,
-    });
+    if (setupImg) {
+      const uploadRes = cloudinary.uploader.upload(setupImg, {
+        upload_preset: "EQUITY_EAGLE",
+      });
+      if (uploadRes) {
+        const toUpdate = {
+          setupImg: setupImg,
+          entrysty: entrysty,
+          exitsty: exitsty,
+          comments: comments,
+        };
 
-    res.status(200).json(trade);
+        const trade = await TradeModel.findByIdAndUpdate(tradeId, toUpdate, {
+          new: true,
+        });
+
+        res.status(200).json(trade);
+      }
+    } else {
+      return res.status(403).json("Setup image required");
+    }
   } catch (error) {
     console.error({ error: error.message });
     return res.status(500).json({ error: error.message });
