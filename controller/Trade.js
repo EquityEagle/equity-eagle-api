@@ -48,10 +48,12 @@ export const DocTrade = async (req, res) => {
 
 export const editTrade = async (req, res) => {
   try {
-    const { trackId } = req.params;
-    const trade = await TradeModel.findByIdAndUpdate(trackId, req.body, {
-      new: true,
-    });
+    const { accounthash } = req.params;
+    const trade = await TradeModel.findOneAndUpdate(
+      { accounthash: accounthash },
+      req.body,
+      { new: true }
+    );
     res.status(200).json(trade);
   } catch (error) {
     console.error({ error: error.message });
