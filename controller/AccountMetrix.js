@@ -126,3 +126,19 @@ export const getProfitdata = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const { trackId } = req.params;
+    const account = await AccountMetrixModal.findByIdAndDelete(trackId);
+
+    if (!account) {
+      return res.status(404).json({ error: "Account not found" });
+    }
+
+    res.status(200).json(account);
+  } catch (error) {
+    console.error({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};

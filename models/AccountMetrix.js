@@ -4,6 +4,7 @@ const AccountMetrixSchema = mongoose.Schema(
   {
     userId: { type: String, required: true },
     accounttype: { type: String, required: true },
+    // accounthash: { type: String, required: true },
     accountsize: { type: Number, required: true },
     trades: { type: Array, default: [] },
     lots: { type: Number },
