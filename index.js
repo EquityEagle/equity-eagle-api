@@ -10,6 +10,8 @@ import SetupRoute from "./routes/Setup.js";
 import TrackRoute from "./routes/AccountMetrix.js";
 import CommunityRoute from "./routes/Community.js";
 import NoteRoute from "./routes/Notification.js";
+import ChatRoute from "./routes/Chat.js";
+import MessageRoute from "./routes/Message.js";
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.use("/setup", SetupRoute);
 app.use("/metrix", TrackRoute);
 app.use("/community", CommunityRoute);
 app.use("/notification", NoteRoute);
+app.use("/chat", ChatRoute);
+app.use("/message", MessageRoute);
 
 app.use("/", async (req, res) => {
   res.send("Home");
