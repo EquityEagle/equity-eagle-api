@@ -58,7 +58,7 @@ export const editTrade = async (req, res) => {
       });
       if (uploadRes) {
         const toUpdate = {
-          setupImg: setupImg,
+          setupImg: uploadRes,
           entrysty: entrysty,
           exitsty: exitsty,
           comments: comments,
@@ -69,7 +69,7 @@ export const editTrade = async (req, res) => {
         });
 
         res.status(200).json(trade);
-      }
+      } else return res.status(403).json("image required");
     } else {
       return res.status(403).json("Setup image required");
     }
