@@ -44,3 +44,15 @@ export const getMessage = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getUnreadMessage = async (req, res) => {
+  try {
+    const { chatId } = req.params;
+    const messages = await MessageModel.find({ chatId });
+    const unread = messages.filter((msg) => !msg.seen);
+    res.status(200).json(unread);
+  } catch (error) {
+    console.log({ error: error.message });
+    res.status(500).json({ error: error.message });
+  }
+};
