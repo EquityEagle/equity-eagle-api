@@ -79,8 +79,22 @@ export const RegisterWithMoile = async (req, res) => {
       password: hashedPassword,
     });
     const user = await auth.save();
-    const token = jwt.sign({ user });
-    res.status(201).json({ token, user });
+    const token = jwt.sign({ user }, process.env.AUTH_KEY);
+    res.status(201).json(user);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const MobileLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await UserModel.findOne({ email: email });
+    if (!user) return res.status(404).json("User not found");
+    const isMatch = await compare(password, user.password);
+    if (!isMatch) return res.status(403).json("Invaild Password");
+    res.status(200).json(user);
   } catch (error) {
     console.log({ error: error.message });
     return res.status(500).json({ error: error.message });
