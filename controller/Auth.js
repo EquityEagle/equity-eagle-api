@@ -90,7 +90,9 @@ export const RegisterWithMoile = async (req, res) => {
 export const MobileLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await UserModel.findOne({ email: email });
+    const user = await UserModel.findOne({ email: email }).select(
+      "-notification -accounts -ideas -community -networks -channels -setups"
+    );
     if (!user) return res.status(404).json("User not found");
     const isMatch = await compare(password, user.password);
     if (!isMatch) return res.status(403).json("Invaild Password");
