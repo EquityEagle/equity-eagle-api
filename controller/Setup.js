@@ -223,3 +223,33 @@ export const getSetupCommentLikes = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const PublishIdea = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { desc, image, pair, type } = req.body;
+    const user = await UserModel.findById(userId);
+
+    if (image) {
+      const newSetup = new SetupModel({
+        userId: userId,
+        username: user.username,
+        profile: user.profile,
+        desc: desc,
+        pair: pair,
+        type: type,
+        image: image,
+      });
+
+      const publishedSetup = await newSetup.save();
+      await user.updateOne({ $push: { ideas: publishedSetup } });
+
+      res.status(201).json(publishedSetup);
+    } else {
+      return res.status(404).json("Image is required");
+    }
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
