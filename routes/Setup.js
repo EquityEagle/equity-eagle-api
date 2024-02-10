@@ -6,6 +6,7 @@ import {
   PublishIdea,
   PublishSetup,
   StarSetup,
+  deleteIdea,
   getAllSetup,
   getSetup,
   getSetupCommentLikes,
@@ -26,5 +27,6 @@ router.patch("/:setupId/:userId/comment", CommentOnSetup);
 router.get("/like/comment/:setupId", getSetupLikes);
 router.patch("/:commentsId/like/:userId", LikeSetupComments);
 router.patch("/:setupId/:userId/star", StarSetup);
+router.delete("/:ideaId/delete", deleteIdea);
 
 export default router;
