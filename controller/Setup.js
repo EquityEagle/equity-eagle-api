@@ -79,8 +79,10 @@ export const LikeSetup = async (req, res) => {
     const LikeSetup = new NotificationModel({
       userId: setup.userId,
       image: likedUser.profile,
-      body: `${likedUser.username} Liked your setup`,
+      body: `${likedUser.name} liked your idea`,
+      text: `${setup.desc}`,
       seen: false,
+      type: "star",
     });
 
     if (setup.likes.includes(userId)) {
@@ -105,8 +107,22 @@ export const StarSetup = async (req, res) => {
     const { setupId, userId } = req.params;
     const setup = await SetupModel.findById(setupId);
     const star = setup.star;
+    const owner = await UserModel.findById(setup.userId);
+
+    const starNotify = new NotificationModel({
+      userId: setup.userId,
+      image: user.profile,
+      body: `${user.name} stared your idea`,
+      text: `${setup.desc}`,
+      seen: false,
+      type: "star",
+    });
+
+    const notification = await starNotify.save();
+
     if (!star.includes(userId)) {
       await setup.updateOne({ $push: { star: userId } });
+      await owner.updateOne({ $push: { notification: notification } });
       res.status(200).json("Idea stared");
     } else {
       await setup.updateOne({ $pull: { star: userId } });
@@ -129,8 +145,10 @@ export const CommentOnSetup = async (req, res) => {
     const commentNotify = new NotificationModel({
       userId: setup.userId,
       image: user.profile,
-      body: `${user.username} Commented on your setup`,
+      body: `${user.name} Commented on your idea`,
+      text: `${setup.desc}`,
       seen: false,
+      type: "comment",
     });
 
     let UploadRes;
@@ -186,12 +204,26 @@ export const LikeSetupComments = async (req, res) => {
     const { commentsId } = req.params;
     const { userId } = req.params;
     const Comment = await CommentsModel.findById(commentsId);
+    const user = await UserModel.findById(userId);
+    const owner = await UserModel.findById(Comment.userId);
+
+    const commentNotify = new NotificationModel({
+      userId: Comment.userId,
+      image: user.profile,
+      body: `${user.name} liked your comment`,
+      text: `${Comment.desc}`,
+      seen: false,
+      type: "like",
+    });
+
+    const notification = await commentNotify.save();
 
     if (Comment.likes.includes(userId)) {
       await Comment.updateOne({ $pull: { likes: userId } });
       res.status(200).json("Comment Unliked");
     } else {
       await Comment.updateOne({ $push: { likes: userId } });
+      await owner.updateOne({ $push: { notification: notification } });
       res.status(200).json("Comment Liked");
     }
   } catch (error) {

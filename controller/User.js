@@ -102,14 +102,17 @@ export const ConnectWithTraders = async (req, res) => {
     const notify = new NotificationModel({
       userId: userId,
       image: connector.profile,
-      body: `${connector.name} is now connected with you.`,
+      body: `A new connection has been established with Rapheal ${connector.name}`,
       seen: false,
+      type: "follow",
     });
     const newNote = await notify.save();
 
     if (!user.networks.includes(connectorsId)) {
       await user.updateOne({ $push: { networks: connectorsId } });
       await user.updateOne({ $push: { notification: newNote } });
+    } else {
+      await user.updateOne({ $pull: { networks: connectorsId } });
     }
   } catch (error) {
     console.log({ error: error.message });

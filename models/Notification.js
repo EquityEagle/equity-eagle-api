@@ -6,6 +6,9 @@ const NotificationSchema = mongoose.Schema(
     body: { type: String, required: true },
     image: { type: Object },
     seen: { type: Boolean },
+    text: { type: String, required: true },
+    hasIcon: { type: Boolean, default: false },
+    type: { type: String, required: true },
   },
   { timestamps: true }
 );

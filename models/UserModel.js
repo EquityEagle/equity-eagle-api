@@ -13,6 +13,8 @@ const UserSchema = mongoose.Schema(
     networks: { type: Array, default: [] },
     notification: { type: Array, default: [] },
     verified: { type: Boolean, default: false },
+    isSuspended: { type: Boolean, default: false },
+    isDisabled: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
