@@ -82,7 +82,7 @@ export const LikeSetup = async (req, res) => {
       body: `${likedUser.name} liked your idea`,
       text: `${setup.desc}`,
       seen: false,
-      type: "star",
+      type: "like",
     });
 
     if (setup.likes.includes(userId)) {
