@@ -78,6 +78,7 @@ export const LikeSetup = async (req, res) => {
 
     const LikeSetup = new NotificationModel({
       userId: setup.userId,
+      reactionId: userId,
       image: likedUser.profile,
       body: `${likedUser.name} liked your idea`,
       text: `${setup.desc}`,
@@ -107,12 +108,14 @@ export const StarSetup = async (req, res) => {
     const { setupId, userId } = req.params;
     const setup = await SetupModel.findById(setupId);
     const star = setup.star;
+    const pendingPush = await UserModel.findById(userId);
     const owner = await UserModel.findById(setup.userId);
 
     const starNotify = new NotificationModel({
       userId: setup.userId,
-      image: user.profile,
-      body: `${user.name} stared your idea`,
+      reactionId: userId,
+      image: pendingPush.profile,
+      body: `${pendingPush.name} stared your idea`,
       text: `${setup.desc}`,
       seen: false,
       type: "star",
@@ -144,6 +147,7 @@ export const CommentOnSetup = async (req, res) => {
 
     const commentNotify = new NotificationModel({
       userId: setup.userId,
+      reactionId: userId,
       image: user.profile,
       body: `${user.name} Commented on your idea`,
       text: `${setup.desc}`,
@@ -209,6 +213,7 @@ export const LikeSetupComments = async (req, res) => {
 
     const commentNotify = new NotificationModel({
       userId: Comment.userId,
+      reactionId: userId,
       image: user.profile,
       body: `${user.name} liked your comment`,
       text: `${Comment.desc}`,
