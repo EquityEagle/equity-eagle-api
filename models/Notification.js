@@ -5,6 +5,7 @@ const NotificationSchema = mongoose.Schema(
     userId: { type: String, required: true },
     body: { type: String, required: true },
     reactionId: { type: String, required: true },
+    objectId: { type: String },
     image: { type: Object },
     seen: { type: Boolean },
     text: { type: String, required: true },
