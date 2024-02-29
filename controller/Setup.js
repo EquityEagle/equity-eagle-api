@@ -9,6 +9,23 @@ export const PublishSetup = async (req, res) => {
     const { userId } = req.params;
     const { desc, image, pair, type } = req.body;
     const user = await UserModel.findById(userId);
+    const followersId = user.networks;
+
+    const followers = await Promise.all(
+      followersId.map(async (followerId) => {
+        try {
+          const follower = await UserModel.findById(followerId);
+          return follower;
+        } catch (error) {
+          // Handle errors, such as follower not found
+          console.error(
+            `Error retrieving follower with ID ${followerId}:`,
+            error
+          );
+          return null; // or handle the error as appropriate for your application
+        }
+      })
+    );
 
     if (image) {
       const uploadRes = await cloudinary.uploader.upload(image, {
@@ -27,6 +44,36 @@ export const PublishSetup = async (req, res) => {
 
         const publishedSetup = await newSetup.save();
         await user.updateOne({ $push: { ideas: publishedSetup } });
+
+        // Iterate over each follower
+        followers.forEach(async (followerId) => {
+          try {
+            // Create a new notification for the followers
+            const ideaNotify = new NotificationModel({
+              userId: followerId,
+              reactionId: followerId,
+              objectId: publishedSetup._id,
+              image: user.profile,
+              body: `${user.name} just shared an idea`,
+              text: `${publishedSetup.desc}`,
+              seen: false,
+              type: "idea",
+            });
+
+            const savednotification = await ideaNotify.save();
+            await UserModel.updateOne(
+              { _id: followerId },
+              { $push: { notification: savednotification } }
+            );
+
+            console.log(`Notification sent to follower ${followerId}`);
+          } catch (error) {
+            console.error(
+              `Error sending notification to follower ${followerId}:`,
+              error
+            );
+          }
+        });
 
         res.status(201).json(publishedSetup);
       }
@@ -152,7 +199,7 @@ export const CommentOnSetup = async (req, res) => {
       reactionId: userId,
       objectId: setupId,
       image: user.profile,
-      body: `${user.name} Commented on your idea`,
+      body: `${user.name} commented on your idea`,
       text: `${setup.desc}`,
       seen: false,
       type: "comment",
