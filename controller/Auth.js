@@ -102,3 +102,22 @@ export const MobileLogin = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const findSwitchUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await UserModel.findById(userId);
+    const switchUser = {
+      token: genAuthToken(user),
+      id: user?._id,
+      name: user?.name,
+      email: user?.email,
+      username: user?.username,
+      profile: user?.profile,
+    };
+    return res.status(200).json(switchUser);
+  } catch (error) {
+    console.log({ error: error.message });
+    return res.status(500).json({ error: error.message });
+  }
+};
