@@ -15,6 +15,6 @@ router.post("/login", LoginUser);
 router.post("/mail-login", LoginWithMail);
 router.post("/new/mobile", RegisterWithMoile);
 router.post("/login/mobile", MobileLogin);
-router.post("/switch/:userId", findSwitchUser);
+router.get("/switch/:userId", findSwitchUser);
 
 export default router;
