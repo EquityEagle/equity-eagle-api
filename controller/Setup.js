@@ -51,7 +51,7 @@ export const PublishSetup = async (req, res) => {
             // Create a new notification for the followers
             const ideaNotify = new NotificationModel({
               userId: followerId._id,
-              reactionId: followerId._id,
+              reactionId: userId,
               objectId: publishedSetup._id,
               image: user.profile,
               body: `${user.name} just shared an idea`,
