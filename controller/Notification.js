@@ -17,8 +17,8 @@ export const getUnreadNotifications = async (req, res) => {
   const { userId } = req.params;
   try {
     const notifications = await NotificationModel.find({ userId });
-
-    const unread = notifications.filter((notification) => !notification.seen);
+    const toGet = notifications.filter((not) => not.reactionId !== userId);
+    const unread = toGet.filter((notification) => !notification.seen);
 
     res.status(200).json(unread);
   } catch (error) {
