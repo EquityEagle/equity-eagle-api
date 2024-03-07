@@ -348,9 +348,19 @@ export const deleteIdea = async (req, res) => {
     if (!deletedIdea) {
       return res.status(404).json({ error: "Idea not found" });
     }
+    if (deletedIdea.image) {
+      const publicId = deletedIdea.image.public_id;
+      await cloudinary.uploader.destroy(publicId);
+      console.log("Idea image destroyed");
+    }
     res.status(200).json({ message: "Idea deleted", deletedIdea });
   } catch (error) {
+    const deletedIdea = await SetupModel.findByIdAndDelete(ideaId);
     console.error({ error: error.message });
+    if (deletedIdea && deletedIdea.image) {
+      const publicId = deletedIdea.image.public_id;
+      await cloudinary.uploader.destroy(publicId);
+    }
     return res.status(500).json({ error: error.message });
   }
 };

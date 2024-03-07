@@ -12,6 +12,7 @@ import CommunityRoute from "./routes/Community.js";
 import NoteRoute from "./routes/Notification.js";
 import ChatRoute from "./routes/Chat.js";
 import MessageRoute from "./routes/Message.js";
+import StoryRoute from "./routes/Story.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/community", CommunityRoute);
 app.use("/notification", NoteRoute);
 app.use("/chat", ChatRoute);
 app.use("/message", MessageRoute);
+app.use("/story", StoryRoute);
 
 app.use("/", async (req, res) => {
   res.send("Home");

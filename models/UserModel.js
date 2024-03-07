@@ -15,6 +15,7 @@ const UserSchema = mongoose.Schema(
     verified: { type: Boolean, default: false },
     isSuspended: { type: Boolean, default: false },
     isDisabled: { type: Boolean, default: false },
+    ideaPrivacy: { type: String, default: "public" },
   },
   { timestamps: true }
 );
